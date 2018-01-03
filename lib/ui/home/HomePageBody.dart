@@ -12,7 +12,7 @@ class HomePageBody extends StatelessWidget {
           scrollDirection: Axis.vertical,
           slivers: <Widget>[
             new SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               sliver: new SliverFixedExtentList(
                 itemExtent: 152.0,
                 delegate: new SliverChildBuilderDelegate(

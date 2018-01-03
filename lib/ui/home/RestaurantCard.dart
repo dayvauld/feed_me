@@ -134,21 +134,8 @@ class RestaurantCard extends StatelessWidget {
         ),
       );
 
-      final restaurantItem = new Container(
-        child: new Stack(children: <Widget>[restaurantThumbnail,restaurantThumbnailOverlay,restaurantCardContent,],),
-        height: 124.0,
-        margin: new EdgeInsets.only(left: 0.0),
-        decoration: new BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: new BorderRadius.circular(8.0),
-          boxShadow: <BoxShadow>[
-            new BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10.0,
-              offset: new Offset(0.0, 10.0),
-            ),
-          ],
-        ),
+      final restaurantItem = new Card(
+        child: new Stack(children: <Widget>[restaurantThumbnail,restaurantThumbnailOverlay,restaurantCardContent,],)
       );
 
 //      return new Container(
@@ -172,8 +159,8 @@ class RestaurantCard extends StatelessWidget {
           child: new Container(
             height: 120.0,
             margin: const EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 24.0,
+              vertical: 2.0,
+              horizontal: 2.0,
             ),
             child: new Stack(
               children: <Widget>[
