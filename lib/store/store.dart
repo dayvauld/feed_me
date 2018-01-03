@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 final googleSignIn = new GoogleSignIn();
 final auth = FirebaseAuth.instance;
 final databaseReference = FirebaseDatabase.instance.reference();
+var restaurantsDatabaseReference = databaseReference.child('restaurants');
+
 GoogleSignInAccount user;
 
 Future<Null> _ensureLoggedIn() async {

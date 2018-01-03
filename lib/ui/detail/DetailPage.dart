@@ -1,11 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:feed_me/model/Restaurant.dart';
 
 class DetailPage extends StatelessWidget {
 
-  final Restaurant restaurant;
+  final DataSnapshot snapshot;
 
-  DetailPage(this.restaurant);
+  DetailPage(this.snapshot);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,11 @@ class DetailPage extends StatelessWidget {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text(restaurant.name),
-            new Hero(tag: "restaurant-hero-${restaurant.id}",
-              child: new Image.asset(
-                restaurant.image,
+            new Text(snapshot.value['name']),
+            new Hero(tag: "restaurant-hero-${snapshot.key}",
+              child: new Image.network(
+                snapshot.value['image_url'],
+                fit: BoxFit.cover,
                 width: 96.0,
                 height: 96.0,
               ),

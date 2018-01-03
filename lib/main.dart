@@ -77,7 +77,7 @@ class HomePageState extends State<HomePage> {
 
 class GradientAppBar extends StatelessWidget {
   final String title;
-  final double barHeight = 66.0;
+  final double barHeight = 54.0;
 
 
   GradientAppBar(this.title);
