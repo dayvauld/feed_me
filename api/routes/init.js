@@ -26,7 +26,7 @@ router.post('/', function(req, res, next) {
         return firebase.setRestaurantData(data)
       })
       .then(() => {
-        res.status(200).send('Successfully retrieved and stored restaurant. Start voting!');
+        res.status(200).send('Successfully retrieved and stored restaurants. Start voting!');
       })
       .catch(err => {
         res.status(400).send(err.message);

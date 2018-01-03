@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:feed_me/ui/home/HomePageBody.dart';
-import 'package:feed_me/ui/detail/DetailPage.dart';
+import 'dart:async';
+import 'package:feed_me/store/store.dart' as store;
 
 void main() {
   runApp(new FeedMe());
@@ -23,16 +24,13 @@ class FeedMe extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'feedme'),
-//      routes: <String, WidgetBuilder>{
-//        '/detail': (_) => new DetailPage(),
-//      }
+      home: new HomePage(title: 'feedme'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -46,37 +44,27 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  HomePageState createState() => new HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class HomePageState extends State<HomePage> {
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future ensureLoggedIn() async {
+    await store.logIn;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.ensureLoggedIn();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
-//      appBar: new AppBar(
-//        // Here we take the value from the MyHomePage object that was created by
-//        // the App.build method, and use it to set our appbar title.
-//        title: new Text(widget.title),
-//      ),
       body:new Column(
         children: <Widget>[
           new GradientAppBar("feedme"),

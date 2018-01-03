@@ -138,20 +138,6 @@ class RestaurantCard extends StatelessWidget {
         child: new Stack(children: <Widget>[restaurantThumbnail,restaurantThumbnailOverlay,restaurantCardContent,],)
       );
 
-//      return new Container(
-//          height: 120.0,
-//          margin: const EdgeInsets.symmetric(
-//              vertical: 16.0,
-//              horizontal: 24.0,
-//          ),
-//        child: new Stack(
-//          children: <Widget>[
-//            restaurantItem,
-//            restaurantThumbnail,
-//          ],
-//        ),
-//      );
-
       return new GestureDetector(
           onTap: () => Navigator.of(context).push(new PageRouteBuilder(
             pageBuilder: (_, __, ___) => new DetailPage(restaurant),
