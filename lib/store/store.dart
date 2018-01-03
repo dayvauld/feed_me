@@ -10,6 +10,7 @@ final databaseReference = FirebaseDatabase.instance.reference();
 var restaurantsDatabaseReference = databaseReference.child('restaurants');
 
 GoogleSignInAccount user;
+var displayName;
 
 Future<Null> _ensureLoggedIn() async {
   user = googleSignIn.currentUser;
@@ -27,6 +28,8 @@ Future<Null> _ensureLoggedIn() async {
       accessToken: credentials.accessToken,
     );
   }
+
+  displayName = user.displayName.split(" ")[0];
 }
 
 var logIn = _ensureLoggedIn();

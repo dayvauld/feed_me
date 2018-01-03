@@ -31,8 +31,7 @@ module.exports.setRestaurantData = function(data) {
                 distance: business.distance,
                 latitude: business.coordinates.latitude,
                 longitude: business.coordinates.longitude,
-                location: business.location.address1,
-                vote_count: 0
+                location: business.location.address1
               };
               let restaurantId = database.ref().child('restaurants').push().key;
               updates['/restaurants/' + restaurantId] = restaurant;

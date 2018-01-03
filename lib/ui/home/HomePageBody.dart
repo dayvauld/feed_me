@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:feed_me/store/store.dart' as store;
 import 'package:feed_me/ui/home/RestaurantCard.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:feed_me/store/store.dart' as store;
 
 class HomePageBody extends StatefulWidget {
   @override

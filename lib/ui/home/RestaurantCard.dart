@@ -1,11 +1,36 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:feed_me/ui/detail/DetailPage.dart';
+import 'package:feed_me/store/store.dart' as store;
 
 class RestaurantCard extends StatelessWidget {
   final DataSnapshot snapshot;
 
   RestaurantCard(this.snapshot);
+
+  _vote() {
+    DatabaseReference votesReference = store.restaurantsDatabaseReference
+        .child(snapshot.key)
+        .child('votes');
+    if (snapshot.value['votes'] != null) {
+      if (snapshot.value['votes'][store.user.id] != null) {
+        // Unvote
+        votesReference
+            .child(store.user.id)
+            .remove();
+      } else {
+        // Vote
+        votesReference
+            .child(store.user.id)
+            .set(store.displayName);
+      }
+    } else {
+      // Vote
+      votesReference
+          .child(store.user.id)
+          .set(store.displayName);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +51,36 @@ class RestaurantCard extends StatelessWidget {
         fontSize: 18.0,
         fontWeight: FontWeight.w600
     );
-    final voteTextStyle = baseTextStyle.copyWith(
+    final voteUnselectedTextStyle = baseTextStyle.copyWith(
       color: Colors.white,
       fontSize: 20.0,
     );
-    final votesTextStyle = voteTextStyle.copyWith(
+    final voteSelectedTextStyle = baseTextStyle.copyWith(
+      color: Colors.black,
+      fontSize: 20.0,
+    );
+
+    var voteTextStyle;
+    var voteSelectionColor;
+    if (snapshot.value['votes'] != null) {
+      if (snapshot.value['votes'][store.user.id] != null) {
+        voteTextStyle = voteSelectedTextStyle;
+        voteSelectionColor = Colors.white;
+      } else {
+        voteTextStyle = voteUnselectedTextStyle;
+        voteSelectionColor = Colors.transparent;
+      }
+    } else {
+      voteTextStyle = voteUnselectedTextStyle;
+      voteSelectionColor = Colors.transparent;
+    }
+    var voteCount = 0;
+    if (snapshot.value['votes'] != null) {
+      Map votes = snapshot.value['votes'];
+      voteCount = votes.length;
+    }
+
+    final votesTextStyle = voteUnselectedTextStyle.copyWith(
       color: Colors.white,
       fontSize: 15.0,
     );
@@ -87,32 +137,38 @@ class RestaurantCard extends StatelessWidget {
           // Vote Count
           new Center(
             heightFactor: 1.25,
-            child: new Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                new Center(
-                    child: new Container(
-                      width: 30.0,
-                      height: 30.0,
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: new Border.all(
-                          color: Colors.white,
-                          width: 1.0,
+            child: new GestureDetector(
+              onTap: () {
+                this._vote();
+              },
+              child: new Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Center(
+                      child: new Container(
+                        width: 30.0,
+                        height: 30.0,
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: voteSelectionColor,
+                          border: new Border.all(
+                            color: Colors.white,
+                            width: 1.0,
+                          ),
                         ),
-                      ),
-                      child: new Center(
-                        child: new Text(
-                          snapshot.value['vote_count'].toString(),
-                          style: voteTextStyle,
+                        child: new Center(
+                          child: new Text(
+                            voteCount.toString(),
+                            style: voteTextStyle,
+                          ),
                         ),
-                      ),
-                    )
-                ),
-                new Text(' votes',
-                    textAlign: TextAlign.center,
-                    style: votesTextStyle),
-              ],
+                      )
+                  ),
+                  new Text(' votes',
+                      textAlign: TextAlign.center,
+                      style: votesTextStyle),
+                ],
+              ),
             ),
           ),
           // Category
@@ -162,11 +218,7 @@ class RestaurantCard extends StatelessWidget {
             vertical: 2.0,
             horizontal: 2.0,
           ),
-          child: new Stack(
-            children: <Widget>[
-              restaurantItem,
-            ],
-          ),
+          child: restaurantItem,
         )
     );
   }
