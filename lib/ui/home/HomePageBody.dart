@@ -23,7 +23,6 @@ class HomePageBodyState extends State<HomePageBody> {
     return 'Success!';
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +34,7 @@ class HomePageBodyState extends State<HomePageBody> {
       child: new Container(
         color: new Color(0xFFFFFFF),
         child: new FirebaseAnimatedList(
-            query: store.restaurantsDatabaseReference,
+            query: store.restaurantsDatabaseReference.orderByChild('vote_count'),
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation) =>
           new RestaurantCard(snapshot)

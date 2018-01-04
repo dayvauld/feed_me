@@ -13,24 +13,40 @@ class RestaurantCard extends StatelessWidget {
     DatabaseReference votesReference = store.restaurantsDatabaseReference
         .child(snapshot.key)
         .child('votes');
-    if (snapshot.value['votes'] != null) {
-      if (snapshot.value['votes'][store.user.id] != null) {
+    int voteCount = 0;
+    Map votes = snapshot.value['votes'];
+    if (votes != null) {
+      voteCount = votes.length;
+      if (votes[store.user.id] != null) {
         // Unvote
         votesReference
             .child(store.user.id)
             .remove();
+        voteCount--;
       } else {
         // Vote
         votesReference
             .child(store.user.id)
             .set(store.displayName);
+        voteCount++;
       }
     } else {
       // Vote
       votesReference
           .child(store.user.id)
           .set(store.displayName);
+      voteCount++;
     }
+    // Set vote_count value for sorting. The value is negated because Firebase
+    // can only sort values in ascending order, while we need the data
+    // to come in descending order. Trying to sort the data client side proves
+    // to be a bit problematic when using the FirebaseAnimatedList as the data
+    // becomes unmodifiable, so sticking with this hacky solution should suffice
+    // since this value is actually never read elsewhere.
+    store.restaurantsDatabaseReference
+      .child(snapshot.key)
+      .child('vote_count')
+      .set(-voteCount);
   }
 
   @override
