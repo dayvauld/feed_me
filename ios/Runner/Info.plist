@@ -45,5 +45,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<!-- Add the following entries to the <dict> tag in Info.plist. -->
+
+    <key>CFBundleURLTypes</key>
+      <array>
+          <dict>
+             <key>CFBundleTypeRole</key>
+             <string>Editor</string>
+             <key>CFBundleURLSchemes</key>
+             <array>
+             <!-- reverse url of your client id, for example: -->
+    <string>com.googleusercontent.apps.654687688298-6dl696jn28u15ggn6r15ibfsc07qf6lk</string>
+             <!-- bundle id, for example: -->
+                <string>com.aequilibrium.feedMe</string>
+             </array>
+          </dict>
+      </array>
 </dict>
 </plist>
