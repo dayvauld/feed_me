@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:feed_me/ui/detail/DetailPage.dart';
 import 'package:feed_me/store/store.dart' as store;
+import 'package:feed_me/ui/styles/Styles.dart';
 
 class RestaurantCard extends StatelessWidget {
   final DataSnapshot snapshot;
@@ -34,44 +35,18 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseTextStyle = const TextStyle(
-        fontFamily: 'Poppins'
-    );
-    final regularTextStyle = baseTextStyle.copyWith(
-        color: const Color(0xffb6b2df),
-        fontSize: 9.0,
-        fontWeight: FontWeight.w400
-    );
-    final subHeaderTextStyle = regularTextStyle.copyWith(
-        color: const Color(0xD9FFFFFF),
-        fontSize: 12.0
-    );
-    final headerTextStyle = baseTextStyle.copyWith(
-        color: Colors.white,
-        fontSize: 18.0,
-        fontWeight: FontWeight.w600
-    );
-    final voteUnselectedTextStyle = baseTextStyle.copyWith(
-      color: Colors.white,
-      fontSize: 20.0,
-    );
-    final voteSelectedTextStyle = baseTextStyle.copyWith(
-      color: Colors.black,
-      fontSize: 20.0,
-    );
-
     var voteTextStyle;
     var voteSelectionColor;
     if (snapshot.value['votes'] != null) {
       if (snapshot.value['votes'][store.user.id] != null) {
-        voteTextStyle = voteSelectedTextStyle;
+        voteTextStyle = Styles.voteSelectedTextStyle;
         voteSelectionColor = Colors.white;
       } else {
-        voteTextStyle = voteUnselectedTextStyle;
+        voteTextStyle = Styles.voteUnselectedTextStyle;
         voteSelectionColor = Colors.transparent;
       }
     } else {
-      voteTextStyle = voteUnselectedTextStyle;
+      voteTextStyle = Styles.voteUnselectedTextStyle;
       voteSelectionColor = Colors.transparent;
     }
     var voteCount = 0;
@@ -80,7 +55,7 @@ class RestaurantCard extends StatelessWidget {
       voteCount = votes.length;
     }
 
-    final votesTextStyle = voteUnselectedTextStyle.copyWith(
+    final votesTextStyle = Styles.voteUnselectedTextStyle.copyWith(
       color: Colors.white,
       fontSize: 15.0,
     );
@@ -111,7 +86,7 @@ class RestaurantCard extends StatelessWidget {
           children: <Widget>[
             new Image.asset(image, height: 12.0),
             new Container(width: 8.0),
-            new Text(value, style: regularTextStyle),
+            new Text(value, style: Styles.regularTextStyle),
           ]
       );
     }
@@ -127,12 +102,12 @@ class RestaurantCard extends StatelessWidget {
           new Container(height: 4.0),
           new Center(
               child: new Text(snapshot.value['name'],
-                style: headerTextStyle,
+                style: Styles.headerTextStyle,
               )),
           // Location
           new Center(
               child: new Text(snapshot.value['location'],
-                  style: subHeaderTextStyle
+                  style: Styles.subHeaderTextStyle
               )),
           // Vote Count
           new Center(
@@ -175,7 +150,7 @@ class RestaurantCard extends StatelessWidget {
           new Center(
             child: new Text(snapshot.value['category'],
                 textAlign: TextAlign.left,
-                style: subHeaderTextStyle
+                style: Styles.subHeaderTextStyle
             ),
           ),
           // Price & Distance
@@ -190,7 +165,7 @@ class RestaurantCard extends StatelessWidget {
               ),
               new Text(snapshot.value['price'],
                   textAlign: TextAlign.center,
-                  style: subHeaderTextStyle
+                  style: Styles.subHeaderTextStyle
               )
             ],
           ),
