@@ -3,15 +3,13 @@ var router = express.Router();
 var firebase = require('../app/firebase');
 var yelp = require('../app/yelp');
 
-router.post('/', function(req, res, next) {
-  if (req.body.username && req.body.password) {
-    if (req.body.username !== 'admin') {
-      res.status(400).send('Invalid username.');
-      return;
-    }
+const SLACK_TOKEN = 'vO98COhQB6RWMulGQUroFwx4';
 
-    if (req.body.password !== 'feedmeaeq2018') {
-      res.status(400).send('Invalid password.');
+router.post('/', function(req, res, next) {
+
+  if (req.body) {
+    if (req.body.token !== SLACK_TOKEN) {
+      res.status(400).send('Invalid Slack token.');
       return;
     }
     yelp.retrieveRestaurantData()
@@ -19,13 +17,16 @@ router.post('/', function(req, res, next) {
         return firebase.setRestaurantData(data)
       })
       .then(() => {
-        res.status(200).send('Successfully retrieved and stored restaurants. Start voting!');
+        var result = {};
+        result.text = "Retrieved nearby restaurants, starting voting now!";
+        res.status(200).json(result);
       })
       .catch(err => {
         res.status(400).send(err.message);
       });
+
   } else {
-    res.status(400).send('Missing username and password.');
+    res.status(400).send('Missing POST body.');
   }
 });
 
