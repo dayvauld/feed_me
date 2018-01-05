@@ -12,18 +12,40 @@ router.post('/', function(req, res, next) {
       res.status(400).send('Invalid Slack token.');
       return;
     }
-    yelp.retrieveRestaurantData()
-      .then((data) => {
-        return firebase.setRestaurantData(data)
-      })
-      .then(() => {
-        var result = {};
-        result.text = "Retrieved nearby restaurants, starting voting now!";
-        res.status(200).json(result);
-      })
-      .catch(err => {
-        res.status(400).send(err.message);
-      });
+
+    var text = req.body.text;
+    if (text) {
+      if (text === 'start') {
+        yelp.retrieveRestaurantData()
+          .then((data) => {
+            return firebase.setRestaurantData(data)
+          })
+          .then(() => {
+            var result = {};
+            result.text = "Retrieved nearby restaurants, starting voting now!";
+            res.status(200).json(result);
+          })
+          .catch(err => {
+            res.status(400).send(err.message);
+          });
+      } else if (text === 'end') {
+        firebase.setChosenRestaurant()
+          .then((restaurant) => {
+            var result = {};
+            result.text = "Voting finished, the restaurant of the week is: " + restaurant.name + "!";
+            res.status(200).json(result);
+          })
+          .catch(err => {
+            res.status(400).send(err.message);
+          });
+      } else {
+        res.status(400).send('Invalid arguments.');
+        return;
+      }
+    } else {
+      res.status(400).send('No arguments.');
+      return;
+    }
 
   } else {
     res.status(400).send('Missing POST body.');

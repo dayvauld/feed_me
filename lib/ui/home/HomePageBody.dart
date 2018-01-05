@@ -14,6 +14,7 @@ class HomePageBody extends StatefulWidget {
 class HomePageBodyState extends State<HomePageBody> {
 
   DataSnapshot snapshot;
+  String chosenRestaurantId;
 
   Future updateSnapshot() async {
     var snap = await store.restaurantsDatabaseReference.once();
@@ -26,6 +27,12 @@ class HomePageBodyState extends State<HomePageBody> {
   @override
   void initState() {
     super.initState();
+    store.chosenRestaurantReference.onChildChanged
+        .listen((Event event) {
+          setState(() {
+            this.chosenRestaurantId = event.snapshot.value;
+          });
+        });
   }
 
   @override
@@ -37,7 +44,7 @@ class HomePageBodyState extends State<HomePageBody> {
             query: store.restaurantsDatabaseReference.orderByChild('vote_count'),
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation) =>
-          new RestaurantCard(snapshot)
+          new RestaurantCard(snapshot, chosenRestaurantId)
         ),
       ),
     );

@@ -6,10 +6,14 @@ import 'package:feed_me/ui/styles/Styles.dart';
 
 class RestaurantCard extends StatelessWidget {
   final DataSnapshot snapshot;
+  final String chosenRestaurantId;
 
-  RestaurantCard(this.snapshot);
+  RestaurantCard(this.snapshot, this.chosenRestaurantId);
 
   _vote() {
+    if (chosenRestaurantId != null && chosenRestaurantId.isNotEmpty) {
+      return;
+    }
     DatabaseReference votesReference = store.restaurantsDatabaseReference
         .child(snapshot.key)
         .child('votes');
@@ -93,9 +97,14 @@ class RestaurantCard extends StatelessWidget {
       ),
     );
 
-    final restaurantThumbnailOverlay = new Container(
+    var restaurantThumbnailOverlay = new Container(
       color: Colors.black45,
     );
+    if (snapshot.key == chosenRestaurantId) {
+      restaurantThumbnailOverlay = new Container(
+        color: const Color(0x733366FF),
+      );
+    }
 
     Widget _restaurantValue({String value, String image}) {
       return new Row(

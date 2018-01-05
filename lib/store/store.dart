@@ -8,6 +8,7 @@ final googleSignIn = new GoogleSignIn();
 final auth = FirebaseAuth.instance;
 final databaseReference = FirebaseDatabase.instance.reference();
 var restaurantsDatabaseReference = databaseReference.child('restaurants');
+var chosenRestaurantReference = databaseReference.child('chosen_restaurant');
 
 GoogleSignInAccount user;
 var displayName;

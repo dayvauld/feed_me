@@ -36,7 +36,33 @@ module.exports.setRestaurantData = function(data) {
               };
               let restaurantId = database.ref().child('restaurants').push().key;
               updates['/restaurants/' + restaurantId] = restaurant;
+              updates['/chosen_restaurant/id'] = "";
             });
             return database.ref().update(updates);
           });
+}
+
+module.exports.setChosenRestaurant = function() {
+  return new Promise((resolve, reject) => {
+    database.ref('restaurants')
+            .orderByChild('vote_count')
+            .limitToFirst(1)
+            .once('value', function(dataSnapshot) {
+              var restaurantSnapshot;
+              dataSnapshot.forEach(function(childSnapshot) {
+                restaurantSnapshot = childSnapshot;
+              });
+
+              database.ref('chosen_restaurant')
+                .child('id')
+                .set(restaurantSnapshot.key)
+                .catch((err) => {
+                  reject(err);
+                });
+                resolve(restaurantSnapshot.val());
+            })
+            .catch((err) => {
+              reject(err);
+            });
+  });
 }
